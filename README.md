@@ -5,7 +5,7 @@
 
 2. Product Discovery as Cooperative Communication: mathematical modeling research. See the [To Community 1-pager](https://docs.google.com/document/d/1qwcdIuacdUHd_bQTCdA8V3_3w6-0Aj_AIIo8oSOnNPI).
 
-3. Software for E2C: an open-source software framework to help companies exit to community To Community (1-pager). Also, see our YC pitch video.Software for E2C: an open-source software framework to help companies exit to community. See the [To Community 1-pager](https://docs.google.com/document/d/1qwcdIuacdUHd_bQTCdA8V3_3w6-0Aj_AIIo8oSOnNPI) and our YC pitch video.
+3. Software for E2C: an open-source software framework to help companies exit to community To Community (1-pager). Also, see our YC pitch video.Software for E2C: an open-source software framework to help companies exit to community. See the [To Community 1-pager](https://docs.google.com/document/d/1qwcdIuacdUHd_bQTCdA8V3_3w6-0Aj_AIIo8oSOnNPI) and our [YC pitch video](https://www.youtube.com/watch?v=Xt5fWkI7Gj4).
 
 ## Contributors
 - Josh (@thelastjosh)
