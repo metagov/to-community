@@ -23,9 +23,10 @@ If you are interested in getting involved, please message Divya Siddarth on the 
 If you are a founder or investor and would be willing to sit down for a quick 15-minute interview with us—summaries and notes from all interviews will be posted publicly in our lab notebook—please [use this Calendly](https://calendly.com/josh-tan/to-community-interviews) to grab some time!
 
 ## Current contributors
-- Joshua Tan (@thelastjosh)
-- Divya Siddarth (@divyasiddarth)
-- Luke Miller (@lukvmil)
-- Patrick Shafto
+- Joshua Tan, Metagov & Oxford (@thelastjosh)
+- Divya Siddarth, Oxford & Microsoft (@divyasiddarth)
+- Luke Miller, Notre Dame (@lukvmil)
+- Nathan Schneider, CU Boulder
+- Patrick Shafto, Institute for Advanced Studies & Rutgers
 
 This website (and the corresponding GitHub repo) represents our lab notebook. We’ll be posting updates here regularly. Like any open-source project, you can contribute.
