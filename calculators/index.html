@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Governance Transition Calculators</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, button, input, select, textarea {
+            font-family: Helvetica, 'Roboto', Arial, sans-serif;
+        }
+ 
+        .question-button {
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+            border: 2px solid;
+            background-color: transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+ 
+        .question-button[data-answer="yes"] {
+            color: #4CAF50;
+            border-color: #4CAF50;
+        }
+ 
+        .question-button[data-answer="no"] {
+            color: #F44336;
+            border-color: #F44336;
+        }
+ 
+        .question-button[data-answer="yes"]:hover,
+        .question-button[data-answer="yes"].active {
+            background-color: #4CAF50;
+            color: white;
+        }
+ 
+        .question-button[data-answer="no"]:hover,
+        .question-button[data-answer="no"].active {
+            background-color: #F44336;
+            color: white;
+        }
+ 
+        .question-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+        }
+ 
+        .hidden {
+            display: none;
+        }
+ 
+        .greyed-out {
+            background-color: #e5e7eb;
+            color: #9ca3af;
+        }
+ 
+        .project-button {
+            width: 100%;
+            padding: 2rem;
+            font-size: 1.25rem;
+            min-width: 250px;
+            max-width: 400px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 150px;
+        }
+ 
+        @media (max-width: 768px) {
+            .project-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+ 
+<body class="bg-gray-100 flex items-center justify-center min-h-screen relative">
+    <div class="absolute top-4 right-4">
+        <a href="faq.html"
+            class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">Learn
+            more</a>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-8 max-w-4xl w-full">
+        <h1 class="text-3xl font-bold mb-4 text-left">Governance Transition Calculators</h1>
+        <div class="mb-4">
+            <img src="assets/imgs/cover-img.png" alt="Cover Image"
+                class="w-full h-48 object-cover rounded-lg shadow-md">
+        </div>
+        <p class="text-xl mb-2 text-center">Are you ready to exit to community?</p>
+        <p class="text-lg mb-6 text-center">Answer a few simple questions to find out!</p>
+        <div class="flex justify-center">
+            <a href="#" id="start-button"
+                class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">Next</a>
+        </div>
+    </div>
+ 
+    <!-- Project Selection Page -->
+    <div id="project-selection" class="hidden bg-white shadow-md rounded-lg p-8 max-w-4xl w-full mt-8">
+        <h2 class="text-2xl font-bold mb-8 text-center">Please select the type of project that best describes you:</h2>
+        <div class="flex flex-col space-y-6 md:flex-row md:space-y-0 md:space-x-6 justify-around">
+            <a href="#" id="bdfl-button"
+                class="project-button inline-block bg-green-500 text-white font-bold py-6 px-8 rounded-lg shadow-md hover:bg-green-600 transition duration-300 text-center text-xl flex items-center justify-center">
+                BDFL governed Open Source Project
+            </a>
+            <a href="#" id="company-button"
+                class="project-button inline-block bg-green-500 text-white font-bold py-6 px-8 rounded-lg shadow-md hover:bg-green-600 transition duration-300 text-center text-xl flex items-center justify-center">
+                Company built Open Source Project
+            </a>
+        </div>
+    </div>
+ 
+    <!-- Section 1: Strategy & Planning -->
+    <div id="section-1" class="hidden bg-white shadow-md rounded-lg p-8 max-w-4xl w-full mt-8">
+        <h2 class="text-2xl font-bold mb-4">Section 1: Strategy & Planning</h2>
+        <div class="flex justify-end mb-2">
+            <p class="font-bold">Yes</p>
+            <p class="font-bold ml-8">No</p>
+        </div>
+        <div class="space-y-4">
+            <div class="flex justify-between items-center">
+                <p>Does your leadership, feel energized to personally lead a transition/E2C?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="1" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="1" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Is the community involved in the decision to transition/E2C and supports the process?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="2" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="2" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Have you decided on the organizational and governance structure that will result from the
+                    transition/E2C?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="3" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="3" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Have the motivations and expected outcomes of various decision makers been discussed so that everyone
+                    is aware of each other's needs and expectations?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="4" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="4" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Have you identified everyone legally required to make the decision to transition/E2C?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="5" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="5" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Have you identified who the future owners/ stewards of the organization/ project will be?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="6" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="6" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Do you feel like your project is facing difficulties and a governance transition is the only way to
+                    resolve the issue?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="7" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="7" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Do you know how the control and flow of resources will change after your transition?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="8" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="8" data-answer="no">✗</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 flex justify-between items-center">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 16.67%;"></div>
+            </div>
+            <p class="text-right ml-4">1/6 progress</p>
+            <button id="next-button"
+                class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ml-4">Next</button>
+        </div>
+    </div>
+ 
+    <!-- Secton 2: Governance -->
+    <div id="section-2" class="bg-white shadow-md rounded-lg p-8 max-w-4xl w-full hidden">
+        <h2 class="text-2xl font-bold mb-4">Section 2: Governance</h2>
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <p>Does your project document how contributors can earn more rights such as commit access or decision
+                    power, and applies these principles consistently?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="9" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="9" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Is decision making power in your project distributed in a transparent way?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="10" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="10" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Do you and your community have a clear shared understanding about what it is that you are governing?
+                </p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="11" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="11" data-answer="no">✗</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 flex justify-between items-center">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 33.33%;"></div>
+            </div>
+            <p class="text-right ml-4">2/6 progress</p>
+            <button id="next-button"
+                class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ml-4">Next</button>
+        </div>
+    </div>
+ 
+    <!-- Section 3: Internal Systems -->
+    <div id="section-3" class="bg-white shadow-md rounded-lg p-8 max-w-4xl w-full hidden">
+        <h2 class="text-2xl font-bold mb-4">Section 3: Internal Systems</h2>
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <p>Can anyone using standard, widely-available tools, build the code in a reproducible way?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="12" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="12" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Is the full history of the project's code available via a source code control system, in a way that
+                    allows anyone to recreate any released version?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="13" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="13" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Does your project document a repeatable release process so that someone new to the project can
+                    independently generate the complete set of artifacts required for a release?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="14" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="14" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Is your project open and honest about the quality of its code?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="15" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="15" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Does your project have a proven track record of putting a very high priority on producing secure
+                    software?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="16" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="16" data-answer="no">✗</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 flex justify-between items-center">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 50%;"></div>
+            </div>
+            <p class="text-right ml-4">3/6 progress</p>
+            <button id="next-button"
+                class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ml-4">Next</button>
+        </div>
+    </div>
+ 
+    <!-- Section 4: Leadership -->
+    <div id="section-4" class="bg-white shadow-md rounded-lg p-8 max-w-4xl w-full hidden">
+        <h2 class="text-2xl font-bold mb-4">Section 4: Leadership</h2>
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <p>Is your (transition) leadership team ready and able to commit significant time - probably more than
+                    you anticipate - towards the transition/E2C process?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="17" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="17" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Do members of your (transition) leadership team have previous experience in transitioning
+                    organizations into community ownership/ stewardship?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="18" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="18" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Have you established a transition leadership team or task force that includes current and future
+                    owners of the organization?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="19" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="19" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Do you have more than one active developer who knows how to build secure software, is familiar with
+                    your project and planning to remain with the project beyond its transition?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="20" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="20" data-answer="no">✗</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 flex justify-between items-center">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 66.67%;"></div>
+            </div>
+            <p class="text-right ml-4">4/6 progress</p>
+            <button id="next-button"
+                class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ml-4">Next</button>
+        </div>
+    </div>
+ 
+    <!-- Section 5: Participatory Culture -->
+    <div id="section-5" class="bg-white shadow-md rounded-lg p-8 max-w-4xl w-full hidden">
+        <h2 class="text-2xl font-bold mb-4">Section 5: Participatory Culture</h2>
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <p>Does your organization already rely significantly on value contributed by community members who are
+                    not officially employed by the organization?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="21" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="21" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Do you have access to advisors with expert knowledge on structuring and operating community owned
+                    organizations/ community governed OSS?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="22" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="22" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Does your community feel a strong connection to the organization or product?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="23" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="23" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Have you established training and education formats to help the community transition into its new
+                    role post-E2C?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="24" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="24" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Are discussions in your community held in a public and transparent manner?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="25" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="25" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Is your community serious about the willingness and capacity to transition?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="26" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="26" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-between items-center">
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="bg-blue-500 h-2.5 rounded-full" style="width: 85.71%;"></div>
+                </div>
+                <p class="text-right ml-4">5/6 progress</p>
+                <button id="next-button"
+                    class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ml-4">Next</button>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Section 6: Legal and Regulatory Requirements -->
+    <div id="section-6" class="bg-white shadow-md rounded-lg p-8 max-w-4xl w-full hidden">
+        <h2 class="text-2xl font-bold mb-4">Section 6: Legal and Regulatory Requirements</h2>
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <p>Does the project clearly define and document the copyright ownership of everything that the project
+                    produces?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="27" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="27" data-answer="no">✗</button>
+                </div>
+            </div>
+            <div class="flex justify-between items-center">
+                <p>Are you confident that everyone guiding the transition is aware of the legal, financial and material
+                    constraints in which they're operating?</p>
+                <div class="flex space-x-4">
+                    <button class="question-button" data-question="28" data-answer="yes">✓</button>
+                    <button class="question-button" data-question="28" data-answer="no">✗</button>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 flex justify-between items-center">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 100%;"></div>
+            </div>
+            <p class="text-right ml-4">6/6 progress</p>
+            <button id="next-button"
+                class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ml-4">Next</button>
+        </div>
+    </div>
+ 
+    <!-- Results Section -->
+    <div id="results-section" class="bg-white shadow-md rounded-lg p-8 max-w-4xl w-full hidden">
+        <h2 class="text-2xl font-bold mb-4">Survey Results</h2>
+ 
+        <!-- Exit Readiness Radar Chart -->
+        <div class="mt-8">
+            <h3 class="text-xl font-bold mb-2">Your Exit Readiness</h3>
+            <div class="w-full max-w-2xl mx-auto">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+ 
+        <!-- Learn More Section -->
+        <div class="mt-8">
+            <h3 class="text-xl font-bold mb-4">Learn more about my results</h3>
+            <div id="section-scores" class="space-y-4"></div>
+        </div>
+ 
+        <!-- Email Collection Section -->
+        <div class="mt-12 border-t pt-8">
+            <h3 class="text-xl font-bold mb-4">Feedback Opportunity</h3>
+            <p class="mb-4">We are excited for you to try out the Exit to Community Calculator! As this is an ongoing research project, we would be thrilled to get in touch to get your feedback on the tool. If you do not want to give feedback then no further data from you will be stored by this website.</p>
+ 
+            <form id="email-form">
+                <input type="email" id="email-input" required placeholder="Enter your email address" class="p-2 border rounded">
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded">Submit</button>
+            </form>
+        </div>
+    </div>
+ 
+    <script type="module">
+        document.getElementById('start-button').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.querySelector('.bg-white.shadow-md.rounded-lg.p-8.max-w-4xl.w-full').classList.add('hidden');
+            document.getElementById('project-selection').classList.remove('hidden');
+        });
+ 
+        document.getElementById('bdfl-button').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('project-selection').classList.add('hidden');
+            document.getElementById('section-1').classList.remove('hidden');
+        });
+ 
+        document.getElementById('company-button').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('project-selection').classList.add('hidden');
+            document.getElementById('section-1').classList.remove('hidden');
+        });
+ 
+        const questionButtons = document.querySelectorAll('.question-button');
+        const nextButton = document.getElementById('next-button');
+        const answers = {};
+ 
+        // Define the dictionary with values for each question
+        const questionValues = {
+            // Section 1
+            1: 93,
+            2: 63,
+            3: 41,
+            4: 35,
+            5: 60,
+            6: 68,
+            7: 44,
+            8: 35,
+            // Section 2
+            9: 47,
+            10: 33,
+            11: 79,
+            // Section 3
+            12: 27,
+            13: 13,
+            14: 24,
+            15: 22,
+            16: 17,
+            // Section 4
+            17: 85,
+            18: 67,
+            19: 75,
+            20: 50,
+            // Section 5
+            21: 64,
+            22: 82,
+            23: 50,
+            24: 32,
+            25: 41,
+            26: 86,
+            // Section 6
+            27: 6,
+            28: 74
+        };
+ 
+        // Calculate the total value for each section
+        const sectionTotals = {
+            1: Object.values(questionValues).slice(0, 8).reduce((a, b) => a + b, 0),
+            2: Object.values(questionValues).slice(8, 11).reduce((a, b) => a + b, 0),
+            3: Object.values(questionValues).slice(11, 16).reduce((a, b) => a + b, 0),
+            4: Object.values(questionValues).slice(16, 20).reduce((a, b) => a + b, 0),
+            5: Object.values(questionValues).slice(20, 26).reduce((a, b) => a + b, 0),
+            6: Object.values(questionValues).slice(26, 28).reduce((a, b) => a + b, 0)
+        };
+ 
+        questionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const question = parseInt(this.getAttribute('data-question'));
+                const answer = this.getAttribute('data-answer');
+                let section;
+ 
+                // Determine the section based on the question number
+                if (question <= 8) {
+                    section = 1;
+                } else if (question <= 11) {
+                    section = 2;
+                } else if (question <= 16) {
+                    section = 3;
+                } else if (question <= 20) {
+                    section = 4;
+                } else if (question <= 26) {
+                    section = 5;
+                } else {
+                    section = 6;
+                }
+ 
+                if (answers[question] !== answer) {
+                    answers[question] = answer;
+                }
+ 
+                // Remove active class from all buttons of the same question
+                document.querySelectorAll(`.question-button[data-question="${question}"]`).forEach(btn => {
+                    btn.classList.remove('active');
+                });
+ 
+                // Add active class to the clicked button
+                this.classList.add('active');
+ 
+                checkNextButtonState(section);
+            });
+        });
+ 
+        function checkNextButtonState(section) {
+            const sectionQuestions = {
+                1: 8,
+                2: 3,
+                3: 5,
+                4: 4,
+                5: 6,
+                6: 2
+            };
+ 
+            const answeredQuestions = Object.keys(answers).filter(q => {
+                const qNum = parseInt(q);
+                return (section === 1 && qNum <= 8) ||
+                       (section === 2 && qNum > 8 && qNum <= 11) ||
+                       (section === 3 && qNum > 11 && qNum <= 16) ||
+                       (section === 4 && qNum > 16 && qNum <= 20) ||
+                       (section === 5 && qNum > 20 && qNum <= 26) ||
+                       (section === 6 && qNum > 26);
+            }).length;
+ 
+            const nextButton = document.querySelector(`#section-${section} #next-button`);
+            nextButton.disabled = answeredQuestions < sectionQuestions[section];
+        }
+ 
+        // Update event listeners for next buttons
+        for (let i = 1; i <= 6; i++) {
+            const nextButton = document.querySelector(`#section-${i} #next-button`);
+            nextButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                document.getElementById(`section-${i}`).classList.add('hidden');
+                if (i < 6) {
+                    document.getElementById(`section-${i + 1}`).classList.remove('hidden');
+                } else {
+                    document.getElementById('results-section').classList.remove('hidden');
+                    createRadarChart();
+                }
+            });
+        }
+ 
+        let radarData;
+
+        function createRadarChart() {
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            radarData = {
+                labels: ['Strategy & Planning', 'Governance', 'Internal Systems', 'Leadership', 'Participatory Culture', 'Legal and Regulatory'],
+                datasets: [{
+                    label: 'Exit Readiness',
+                    data: Object.keys(sectionTotals).map(section => {
+                        const sectionQuestions = Object.keys(answers).filter(q => {
+                            const qNum = parseInt(q);
+                            return (section == 1 && qNum <= 8) ||
+                                   (section == 2 && qNum > 8 && qNum <= 11) ||
+                                   (section == 3 && qNum > 11 && qNum <= 16) ||
+                                   (section == 4 && qNum > 16 && qNum <= 20) ||
+                                   (section == 5 && qNum > 20 && qNum <= 26) ||
+                                   (section == 6 && qNum > 26);
+                        });
+                        const yesAnswers = sectionQuestions.filter(q => answers[q] === 'yes').length;
+                        const sectionTotal = sectionTotals[section];
+                        return (yesAnswers / sectionQuestions.length) * sectionTotal;
+                    }),
+                    fill: true,
+                    backgroundColor: 'rgba(65, 105, 225, 0.2)',
+                    borderColor: 'rgb(65, 105, 225)',
+                    pointBackgroundColor: 'rgb(65, 105, 225)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(65, 105, 225)'
+                }]
+            };
+
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: radarData,
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+
+            updateLearnMoreContent();
+        }
+
+        function updateLearnMoreContent() {
+            const sectionScores = document.getElementById('section-scores');
+            
+            let scoresHtml = '';
+            radarData.labels.forEach((section, index) => {
+                const score = radarData.datasets[0].data[index].toFixed(2);
+                scoresHtml += `
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2">${section}: ${score}</h4>
+                        <p>${getScoreDescription(section, score)}</p>
+                    </div>
+                `;
+            });
+            sectionScores.innerHTML = scoresHtml;
+        }
+
+        function getScoreDescription(section, score) {
+            const maxScore = sectionTotals[Object.keys(sectionTotals)[radarData.labels.indexOf(section)]];
+            const percentage = (score / maxScore) * 100;
+            
+            if (percentage >= 80) {
+                return "Excellent! You're well-prepared in this area.";
+            } else if (percentage >= 60) {
+                return "Good progress, but there's room for improvement.";
+            } else if (percentage >= 40) {
+                return "You're on the right track, but significant work is needed.";
+            } else {
+                return "This area needs substantial attention before considering an exit to community.";
+            }
+        }
+
+        document.getElementById('email-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email-input').value;
+            fetch('/submit-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email }),
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Thank you for your interest! We will be in touch soon.');
+                document.getElementById('email-input').value = '';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    </script>
+</body>
+ 
+</html>
