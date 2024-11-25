@@ -436,10 +436,17 @@
         <h2 class="text-2xl font-bold mb-4">Survey Results</h2>
  
         <!-- Exit Readiness Radar Chart -->
-        <div class="mt-8">
-            <h3 class="text-xl font-bold mb-2">Your Exit Readiness</h3>
-            <div class="w-full max-w-2xl mx-auto">
+        <div class="mt-8 relative" style="min-height: 500px;">
+            <div style="max-width: 500px;" class="mx-auto">
+                <h3 class="text-xl font-bold mb-2">Your Exit Readiness</h3>
                 <canvas id="radarChart"></canvas>
+            </div>
+            
+            <div class="absolute" style="right: 0; bottom: 0;">
+                <div class="text-center p-6">
+                    <h3 class="text-lg font-bold mb-1">Overall Readiness Score</h3>
+                    <div id="overall-score" class="text-5xl font-bold text-blue-600"></div>
+                </div>
             </div>
         </div>
  
@@ -688,7 +695,10 @@
                 'Legal and Regulatory Requirements': 80
             };
 
-            // Calculate scores using the same logic as detailed answers
+            // Calculate scores and overall score
+            let totalActualScore = 0;
+            let totalPossibleScore = 0;
+            
             const scores = sections.map(section => {
                 let actualScore = 0;
                 let questionRange = Array.from(
@@ -703,8 +713,14 @@
                 });
 
                 const totalScore = sectionTotals[section.title];
+                totalActualScore += actualScore;
+                totalPossibleScore += totalScore;
                 return (actualScore / totalScore) * 100;
             });
+
+            // Calculate and display overall score
+            const overallScore = ((totalActualScore / totalPossibleScore) * 100).toFixed(1);
+            document.getElementById('overall-score').innerHTML = `${overallScore}%`;
 
             radarData = {
                 labels: ['Strategy & Planning', 'Governance', 'Internal Systems', 'Leadership', 'Participatory Culture', 'Legal and Regulatory'],
