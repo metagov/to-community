@@ -443,10 +443,12 @@
             </div>
         </div>
  
-        <!-- Learn More Section -->
+        <!-- Detailed Answers Section -->
         <div class="mt-8">
-            <h3 class="text-xl font-bold mb-4">Learn more about my results</h3>
-            <div id="section-scores" class="space-y-4"></div>
+            <h3 class="text-xl font-bold mb-4">Your Detailed Answers</h3>
+            <div class="space-y-6" id="detailed-answers">
+                <!-- Section containers will be populated by JavaScript -->
+            </div>
         </div>
  
         <!-- Google Sheets Contact Form -->
@@ -460,29 +462,6 @@
     </div>
  
     <script type="module">
-        document.getElementById('start-button').addEventListener('click', function (event) {
-            event.preventDefault();
-            document.querySelector('.bg-white.shadow-md.rounded-lg.p-8.max-w-4xl.w-full').classList.add('hidden');
-            document.getElementById('project-selection').classList.remove('hidden');
-        });
- 
-        document.getElementById('bdfl-button').addEventListener('click', function (event) {
-            event.preventDefault();
-            document.getElementById('project-selection').classList.add('hidden');
-            document.getElementById('section-1').classList.remove('hidden');
-        });
- 
-        document.getElementById('company-button').addEventListener('click', function (event) {
-            event.preventDefault();
-            document.getElementById('project-selection').classList.add('hidden');
-            document.getElementById('section-1').classList.remove('hidden');
-        });
- 
-        const questionButtons = document.querySelectorAll('.question-button');
-        const nextButton = document.getElementById('next-button');
-        const answers = {};
- 
-        // Define the dictionary with values for each question
         const questionValues = {
             // Section 1
             1: 93,
@@ -519,6 +498,95 @@
             27: 6,
             28: 74
         };
+
+        const sections = [
+            {
+                title: 'Strategy & Planning',
+                questions: [
+                    'Does your leadership, feel energized to personally lead a transition/E2C?',
+                    'Is the community involved in the decision to transition/E2C and supports the process?',
+                    'Have you decided on the organizational and governance structure that will result from the transition/E2C?',
+                    'Have the motivations and expected outcomes of various decision makers been discussed so that everyone is aware of each other\'s needs and expectations?',
+                    'Have you identified everyone legally required to make the decision to transition/E2C?',
+                    'Have you identified who the future owners/ stewards of the organization/ project will be?',
+                    'Do you feel like your project is facing difficulties and a governance transition is the only way to resolve the issue?',
+                    'Do you know how the control and flow of resources will change after your transition?'
+                ],
+                range: [1, 8]
+            },
+            {
+                title: 'Governance',
+                questions: [
+                    'Does your project document how contributors can earn more rights such as commit access or decision power, and applies these principles consistently?',
+                    'Is decision making power in your project distributed in a transparent way?',
+                    'Do you and your community have a clear shared understanding about what it is that you are governing?'
+                ],
+                range: [9, 11]
+            },
+            {
+                title: 'Internal Systems',
+                questions: [
+                    'Can anyone using standard, widely-available tools, build the code in a reproducible way?',
+                    'Is the full history of the project\'s code available via a source code control system, in a way that allows anyone to recreate any released version?',
+                    'Does your project document a repeatable release process so that someone new to the project can independently generate the complete set of artifacts required for a release?',
+                    'Is your project open and honest about the quality of its code?',
+                    'Does your project have a proven track record of putting a very high priority on producing secure software?'
+                ],
+                range: [12, 16]
+            },
+            {
+                title: 'Leadership',
+                questions: [
+                    'Is your (transition) leadership team ready and able to commit significant time - probably more than you anticipate - towards the transition/E2C process?',
+                    'Do members of your (transition) leadership team have previous experience in transitioning organizations into community ownership/ stewardship?',
+                    'Have you established a transition leadership team or task force that includes current and future owners of the organization?',
+                    'Do you have more than one active developer who knows how to build secure software, is familiar with your project and planning to remain with the project beyond its transition?'
+                ],
+                range: [17, 20]
+            },
+            {
+                title: 'Participatory Culture',
+                questions: [
+                    'Does your organization already rely significantly on value contributed by community members who are not officially employed by the organization?',
+                    'Do you have access to advisors with expert knowledge on structuring and operating community owned organizations/ community governed OSS?',
+                    'Does your community feel a strong connection to the organization or product?',
+                    'Have you established training and education formats to help the community transition into its new role post-E2C?',
+                    'Are discussions in your community held in a public and transparent manner?',
+                    'Is your community serious about the willingness and capacity to transition?'
+                ],
+                range: [21, 26]
+            },
+            {
+                title: 'Legal and Regulatory Requirements',
+                questions: [
+                    'Does the project clearly define and document the copyright ownership of everything that the project produces?',
+                    'Are you confident that everyone guiding the transition is aware of the legal, financial and material constraints in which they\'re operating?'
+                ],
+                range: [27, 28]
+            }
+        ];
+
+        document.getElementById('start-button').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.querySelector('.bg-white.shadow-md.rounded-lg.p-8.max-w-4xl.w-full').classList.add('hidden');
+            document.getElementById('project-selection').classList.remove('hidden');
+        });
+ 
+        document.getElementById('bdfl-button').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('project-selection').classList.add('hidden');
+            document.getElementById('section-1').classList.remove('hidden');
+        });
+ 
+        document.getElementById('company-button').addEventListener('click', function (event) {
+            event.preventDefault();
+            document.getElementById('project-selection').classList.add('hidden');
+            document.getElementById('section-1').classList.remove('hidden');
+        });
+ 
+        const questionButtons = document.querySelectorAll('.question-button');
+        const nextButton = document.getElementById('next-button');
+        const answers = {};
  
         // Calculate the total value for each section
         const sectionTotals = {
@@ -610,24 +678,39 @@
 
         function createRadarChart() {
             const radarCtx = document.getElementById('radarChart').getContext('2d');
+            
+            const sectionTotals = {
+                'Strategy & Planning': 439,
+                'Governance': 159,
+                'Internal Systems': 103,
+                'Leadership': 277,
+                'Participatory Culture': 356,
+                'Legal and Regulatory Requirements': 80
+            };
+
+            // Calculate scores using the same logic as detailed answers
+            const scores = sections.map(section => {
+                let actualScore = 0;
+                let questionRange = Array.from(
+                    {length: section.range[1] - section.range[0] + 1}, 
+                    (_, i) => i + section.range[0]
+                );
+
+                questionRange.forEach(q => {
+                    if (answers[q] === 'yes') {
+                        actualScore += questionValues[q];
+                    }
+                });
+
+                const totalScore = sectionTotals[section.title];
+                return (actualScore / totalScore) * 100;
+            });
+
             radarData = {
                 labels: ['Strategy & Planning', 'Governance', 'Internal Systems', 'Leadership', 'Participatory Culture', 'Legal and Regulatory'],
                 datasets: [{
                     label: 'Exit Readiness',
-                    data: Object.keys(sectionTotals).map(section => {
-                        const sectionQuestions = Object.keys(answers).filter(q => {
-                            const qNum = parseInt(q);
-                            return (section == 1 && qNum <= 8) ||
-                                   (section == 2 && qNum > 8 && qNum <= 11) ||
-                                   (section == 3 && qNum > 11 && qNum <= 16) ||
-                                   (section == 4 && qNum > 16 && qNum <= 20) ||
-                                   (section == 5 && qNum > 20 && qNum <= 26) ||
-                                   (section == 6 && qNum > 26);
-                        });
-                        const yesAnswers = sectionQuestions.filter(q => answers[q] === 'yes').length;
-                        const sectionTotal = sectionTotals[section];
-                        return (yesAnswers / sectionQuestions.length) * sectionTotal;
-                    }),
+                    data: scores,
                     fill: true,
                     backgroundColor: 'rgba(65, 105, 225, 0.2)',
                     borderColor: 'rgb(65, 105, 225)',
@@ -653,17 +736,45 @@
                                 display: false
                             },
                             suggestedMin: 0,
-                            suggestedMax: 100
+                            suggestedMax: 100,
+                            pointLabels: {
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                callback: function(value, index) {
+                                    const colors = [
+                                        '#FF0000', // Bright Red
+                                        '#00FF00', // Bright Green
+                                        '#0000FF', // Bright Blue
+                                        '#FFD700', // Gold
+                                        '#FF00FF', // Magenta
+                                        '#00FFFF'  // Cyan
+                                    ];
+                                    return `${value}`;
+                                },
+                                color: (context) => {
+                                    const colors = [
+                                        '#FF0000', // Bright Red
+                                        '#00FF00', // Bright Green
+                                        '#0000FF', // Bright Blue
+                                        '#FFD700', // Gold
+                                        '#FF00FF', // Magenta
+                                        '#00FFFF'  // Cyan
+                                    ];
+                                    return colors[context.index];
+                                }
+                            }
                         }
                     }
                 }
             });
 
-            updateLearnMoreContent();
+            displayDetailedAnswers();
         }
 
-        function updateLearnMoreContent() {
-            const sectionScores = document.getElementById('section-scores');
+        function displayDetailedAnswers() {
+            const detailedAnswers = document.getElementById('detailed-answers');
             
             const sectionTotals = {
                 'Strategy & Planning': 439,
@@ -674,31 +785,14 @@
                 'Legal and Regulatory Requirements': 80
             };
 
-            let scoresHtml = '';
-            Object.entries(sectionTotals).forEach(([section, totalScore]) => {
+            let html = '';
+            sections.forEach(section => {
+                // Calculate score for this section
                 let actualScore = 0;
-                let questionRange;
-
-                switch(section) {
-                    case 'Strategy & Planning':
-                        questionRange = Array.from({length: 8}, (_, i) => i + 1);
-                        break;
-                    case 'Governance':
-                        questionRange = Array.from({length: 3}, (_, i) => i + 9);
-                        break;
-                    case 'Internal Systems':
-                        questionRange = Array.from({length: 5}, (_, i) => i + 12);
-                        break;
-                    case 'Leadership':
-                        questionRange = Array.from({length: 4}, (_, i) => i + 17);
-                        break;
-                    case 'Participatory Culture':
-                        questionRange = Array.from({length: 6}, (_, i) => i + 21);
-                        break;
-                    case 'Legal and Regulatory Requirements':
-                        questionRange = Array.from({length: 2}, (_, i) => i + 27);
-                        break;
-                }
+                let questionRange = Array.from(
+                    {length: section.range[1] - section.range[0] + 1}, 
+                    (_, i) => i + section.range[0]
+                );
 
                 questionRange.forEach(q => {
                     if (answers[q] === 'yes') {
@@ -706,30 +800,42 @@
                     }
                 });
 
+                const totalScore = sectionTotals[section.title];
                 const percentage = ((actualScore / totalScore) * 100).toFixed(2);
 
-                scoresHtml += `
-                    <div class="bg-gray-100 p-4 rounded-lg">
-                        <h4 class="font-bold text-lg mb-2">${section}: ${percentage}%</h4>
-                        <p>${getScoreDescription(percentage)}</p>
+                html += `
+                    <div class="border rounded-lg p-4">
+                        <h4 class="text-lg font-bold mb-3">
+                            ${section.title}: ${percentage}%
+                        </h4>
+                        <div class="space-y-2">
+                            ${section.questions.map((q, idx) => {
+                                const questionNumber = section.range[0] + idx;
+                                const answer = answers[questionNumber];
+                                return `
+                                    <div class="flex items-center gap-3">
+                                        <span class="${answer === 'yes' ? 'text-green-600' : 'text-red-600'} font-bold">
+                                            ${answer === 'yes' ? '✓' : '✗'}
+                                        </span>
+                                        <p class="text-sm">${q}</p>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
                     </div>
                 `;
             });
-            sectionScores.innerHTML = scoresHtml;
+            
+            detailedAnswers.innerHTML = html;
         }
 
-        function getScoreDescription(percentage) {
-            percentage = parseFloat(percentage);
-            if (percentage >= 80) {
-                return "Excellent! You're well-prepared in this area.";
-            } else if (percentage >= 60) {
-                return "Good progress, but there's room for improvement.";
-            } else if (percentage >= 40) {
-                return "You're on the right track, but significant work is needed.";
-            } else {
-                return "This area needs substantial attention before considering an exit to community.";
-            }
-        }
+        // Update the event listener for the last section's next button
+        document.querySelector('#section-6 #next-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('section-6').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+            createRadarChart();
+        });
     </script>
 </body>
  
